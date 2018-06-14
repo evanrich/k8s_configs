@@ -1,0 +1,61 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: deluge
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: deluge
+    spec:
+      volumes:
+      - name: deluge
+        hostPath:
+          path: /srv/docker/deluge
+      - name: downloads
+        persistentVolumeClaim:
+          claimName: dockerdata-nas
+      - name: deluge-secrets
+        secret:
+          secretName: deluge
+      containers:
+      - name: deluge
+        image: linuxserver/deluge:124
+        volumeMounts:
+        - name: deluge
+#          subPath: config
+          mountPath: /config
+        - name: downloads
+          subPath: deluge
+          mountPath: /downloads
+ #       - name: deluge-secrets
+ #         subPath: auth
+ #         mountPath: /config/auth
+ #         readOnly: true
+        env:
+        - name: PUID
+          value: '1001'
+        - name: PGID
+          value: '1001'
+        - name: TZ
+          value: 'America/Los_Angeles'
+        ports:
+        - containerPort: 8112
+          name: deluge-webui
+        - containerPort: 58846
+          name: deluge-daemon
+        - containerPort: 62957
+          name: deluge-bt
+        readinessProbe:
+          tcpSocket:
+            port: deluge-bt
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: deluge-bt
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        restartPolicy: Always
+

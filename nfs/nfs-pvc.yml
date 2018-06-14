@@ -1,0 +1,139 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: tv-nas
+spec:
+  selector:
+    matchLabels:
+      name: tv-nas
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 80Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: movies-nas
+spec:
+  selector:
+    matchLabels:
+      name: movies-nas
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 80Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: movies4k-nas
+spec:
+  selector:
+    matchLabels:
+      name: movies4k-nas
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 80Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: tv4k-nas
+spec:
+  selector:
+    matchLabels:
+      name: tv4k-nas
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 80Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: music-nas
+spec:
+  selector:
+    matchLabels:
+      name: music-nas
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 80Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: dockerdata-nas
+spec:
+  selector:
+    matchLabels:
+      name: dockerdata-nas
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 80Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cameras-nas
+spec:
+  selector:
+    matchLabels:
+      name: cameras-nas
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 80Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: images-nas
+spec:
+  selector:
+    matchLabels:
+      name: images-nas
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 80Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: backups-nas
+spec:
+  selector:
+    matchLabels:
+      name: backups-nas
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 80Ti
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: plexmediaserver
+spec:
+  selector:
+    matchLabels:
+      name: plexmediaserver
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 10Gi

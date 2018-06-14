@@ -1,0 +1,46 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx-deployment
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+        version: v1
+    spec:
+      volumes:
+      - name: nginxlocal
+        hostPath:
+          path: /srv/docker/nginx
+      - name: plexrequestcert
+        secret:
+          secretName: plexrequests-certificate
+      - name: mysitecert
+        secret:
+          secretName:
+        
+        
+      containers:
+      - name: nginx
+        image: nginx:mainline-alpine # Use 1.15.0
+        volumeMounts:
+        - name: nginxlocal
+          subPath: config/nginx.conf
+          mountPath: /etc/nginx/nginx.conf
+        - name: plexrequestcert
+          mountPath: /etc/nginx/ssl
+        - name: evanrichardsonphotographycert
+          mountPath: /etc/nginx/ssl
+        - name: nginxlocal
+          subPath: logs
+          mountPath: /etc/nginx/logs
+        ports:
+        - containerPort: 12443

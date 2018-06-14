@@ -1,0 +1,33 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      volumes:
+      - name: nginxlocal
+        hostPath:
+          path: /srv/docker/nginx
+      containers:
+      - name: nginx
+        image: nginx:mainline-alpine # Use 1.15.0
+        volumeMounts:
+        - name: nginxlocal
+          subPath: config/nginx.conf
+          mountPath: /etc/nginx/nginx.conf
+        - name: nginxlocal
+          subPath: ssl
+          mountPath: /etc/nginx/ssl
+        - name: nginxlocal
+          subPath: logs
+          mountPath: /etc/nginx/logs
+        ports:
+        - containerPort: 12443

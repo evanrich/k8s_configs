@@ -1,0 +1,169 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tv-nas
+  labels:
+    name: tv-nas
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=4.1"
+spec:
+  capacity:
+    storage: 80Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: mediastore.home
+    path: "/mnt/sirius/media/TV"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: movies-nas
+  labels:
+    name: movies-nas
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=4.1"
+spec:
+  capacity:
+    storage: 80Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: mediastore.home
+    path: "/mtn/sirius/media/Movies"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: movies4k-nas
+  labels:
+    name: movies4k-nas
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=4.1"
+spec:
+  capacity:
+    storage: 80Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: mediastore.home
+    path: "/mnt/sirius/media/4k/movies"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tv4k-nas
+  labels:
+    name: tv4k-nas
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=4.1"
+spec:
+  capacity:
+    storage: 80Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: mediastore.home
+    path: "/mnt/sirius/media/4k/tv"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: music-nas
+  labels:
+    name: music-nas
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=4.1"
+spec:
+  capacity:
+    storage: 80Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: mediastore.home
+    path: "/mnt/sirius/media/music"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: dockerdata
+  labels:
+    name: dockerdata-nas
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=4.1"
+spec:
+  capacity:
+    storage: 80Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: mediastore.home
+    path: "/mnt/sirius/dockerdata"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cameras-nas
+  labels:
+    name: cameras-nas
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=4.1"
+spec:
+  capacity:
+    storage: 80Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: mediastore.home
+    path: "/mnt/sirius/cameras"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: images-nas
+  labels:
+    name: images-nas
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=4.1"
+spec:
+  capacity:
+    storage: 80Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: mediastore.home
+    path: "/mnt/sirius/images"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: backups-nas
+  labels:
+    name: backups-nas
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=4.1"
+spec:
+  capacity:
+    storage: 80Ti
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: mediastore.home
+    path: "/mnt/siriuus/backups"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plexmediaserver
+  labels:
+    name: plexmediaserver
+  annotations:
+    volume.beta.kubernetes.io/mount-options: "nfsvers=4.1"
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadOnlyMany
+  nfs:
+    server: plexmediaserver.home
+    path: "/var/lib/plexmediaserver"
