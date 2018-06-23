@@ -1,0 +1,49 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: tautulli
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tautulli
+    spec:
+      volumes:
+      - name: tautulli
+        hostPath:
+          path: /nfs/dockerdata/tautulli
+      - name: pms
+        hostPath:
+          path: /nfs/plexdata
+      containers:
+      - name: tautulli
+        image: linuxserver/tautulli:129
+        volumeMounts:
+        - name: tautulli
+          subPath: config
+          mountPath: /config
+        - name: pms
+          subPath: Library/Application Support/Plex Media Server/Logs
+          mountPath: /logs
+          readOnly: true
+        env:
+        - name: PUID
+          value: '1001'
+        - name: PGID
+          value: '1001'
+        - name: TZ
+          value: 'America/Los_Angeles'
+        ports:
+        - name: tautulli
+          containerPort: 8181
+        readinessProbe:
+          tcpSocket:
+            port: tautulli
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: tautulli
+          initialDelaySeconds: 15
+          periodSeconds: 20
