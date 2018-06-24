@@ -30,7 +30,7 @@ spec:
     - ReadWriteMany
   nfs:
     server: mediastore.home
-    path: "/mtn/sirius/media/Movies"
+    path: "/mnt/sirius/media/Movies"
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -149,7 +149,7 @@ spec:
     - ReadWriteMany
   nfs:
     server: mediastore.home
-    path: "/mnt/siriuus/backups"
+    path: "/mnt/sirius/backups"
 ---
 apiVersion: v1
 kind: PersistentVolume

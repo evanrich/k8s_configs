@@ -14,11 +14,11 @@ spec:
         hostPath:
           path: /nfs/dockerdata/tautulli
       - name: pms
-        hostPath:
-          path: /nfs/plexdata
+        persistentVolumeClaim:
+          claimName: plexmediaserver
       containers:
       - name: tautulli
-        image: linuxserver/tautulli:129
+        image: linuxserver/tautulli:131
         volumeMounts:
         - name: tautulli
           subPath: config
