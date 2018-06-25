@@ -10,9 +10,6 @@ spec:
         app: sonarr
     spec:
       volumes:
-      - name: sonarr
-        hostPath:
-          path: /dockerfs/sonarr
       - name: dockerdata
         persistentVolumeClaim:
           claimName: dockerdata-nas
