@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ombi
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ombi
+    spec:
+      volumes:
+      - name:  dockerdata
+        persistentVolumeClaim:
+          claimName: dockerdata-nas
+      containers:
+      - name: ombi
+        image: lsiodev/ombi-preview:58
+        volumeMounts:
+        - name: dockerdata
+          subPath: ombi3
+          mountPath: /config
+        env:
+        - name: PUID
+          value: '1001'
+        - name: PGID
+          value: '1001'
+        - name: TZ
+          value: 'America/Los_Angeles'
+        ports:
+        - name: ombi
+          containerPort: 3579
+        readinessProbe:
+          tcpSocket:
+            port: ombi
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: ombi
+          initialDelaySeconds: 15
+          periodSeconds: 20
