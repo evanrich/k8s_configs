@@ -1,0 +1,56 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sonarr
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      volumes:
+      - name: sonarr
+        hostPath:
+          path: /dockerfs/sonarr
+      - name: dockerdata
+        persistentVolumeClaim:
+          claimName: dockerdata-nas
+      - name: tv-nas
+        persistentVolumeClaim:
+          claimName: tv-nas
+      containers:
+      - name: sonarr
+        image: linuxserver/sonarr:142
+        volumeMounts:
+        - name: dockerdata
+          subPath: sonarr/config
+          mountPath: /config
+        - name: tv-nas
+          mountPath: /tv
+        - name: dockerdata
+          subPath: deluge/downloads/completed
+          mountPath: /mnt/deluge/completed
+        - name: dockerdata
+          subPath: sabnzbdplus/downloads
+          mountPath: /sabdownloads
+        env:
+        - name: PUID
+          value: '0'
+        - name: PGID
+          value: '1001'
+        - name: TZ
+          value: 'America/Los_Angeles'
+        ports:
+        - name: sonarr
+          containerPort: 8989
+        readinessProbe:
+          tcpSocket:
+            port: sonarr
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: sonarr
+          initialDelaySeconds: 15
+          periodSeconds: 20
