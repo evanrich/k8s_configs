@@ -10,10 +10,7 @@ spec:
         app: deluge
     spec:
       volumes:
-      - name: deluge
-        hostPath:
-          path: /srv/docker/deluge
-      - name: downloads
+      - name:  dockerdata
         persistentVolumeClaim:
           claimName: dockerdata-nas
       - name: deluge-secrets
@@ -21,18 +18,21 @@ spec:
           secretName: deluge
       containers:
       - name: deluge
-        image: linuxserver/deluge:124
+        image: linuxserver/deluge:126
         volumeMounts:
-        - name: deluge
-#          subPath: config
+        - name: dockerdata
+          subPath: deluge/config
           mountPath: /config
-        - name: downloads
-          subPath: deluge
+        - name: dockerdata
+          subPath: deluge/downloads
           mountPath: /downloads
- #       - name: deluge-secrets
- #         subPath: auth
- #         mountPath: /config/auth
- #         readOnly: true
+        - name: dockerdata
+          subPath: deluge/watch
+          mountPath: /watch
+          #        - name: deluge-secrets
+          #subPath: auth
+          #mountPath: /config
+          #readOnly: true
         env:
         - name: PUID
           value: '1001'
@@ -57,5 +57,4 @@ spec:
             port: deluge-bt
           initialDelaySeconds: 15
           periodSeconds: 20
-        restartPolicy: Always
 
