@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jackett
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jackett
+    spec:
+      volumes:
+      - name: dockerdata
+        persistentVolumeClaim:
+          claimName: dockerdata-nas
+      containers:
+      - name: jackett
+        image: linuxserver/jackett:198
+        volumeMounts:
+        - name: dockerdata
+          subPath: jackett
+          mountPath: /config
+        - name: dockerdata
+          subPath: jackett/downloads
+          mountPath: /downloads
+        env:
+        - name: PUID
+          value: '1001'
+        - name: PGID
+          value: '1001'
+        - name: TZ
+          value: 'America/Los_Angeles'
+        ports:
+        - name: jackett
+          containerPort: 9117
+        readinessProbe:
+          tcpSocket:
+            port: jackett
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: jackett
+          initialDelaySeconds: 15
+          periodSeconds: 20
