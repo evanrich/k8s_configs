@@ -1,0 +1,58 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: radarr4k
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: radarr4k
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: mira-b
+      volumes:
+      - name: radarr4k
+        hostPath:
+          path: /dockerfs/radarr4k
+      - name: dockerdata
+        persistentVolumeClaim:
+          claimName: dockerdata-nas
+      - name: movies4k-nas
+        persistentVolumeClaim:
+          claimName: movies4k-nas
+      containers:
+      - name: radarr4k
+        image: linuxserver/radarr:117
+        volumeMounts:
+        - name: radarr4k
+          subPath: config
+          mountPath: /config
+        - name: movies4k-nas
+          mountPath: /4k-movies
+        - name: dockerdata
+          subPath: deluge/downloads/completed
+          mountPath: /mnt/deluge/completed
+        - name: dockerdata
+          subPath: sabnzbdplus/downloads
+          mountPath: /sabdownloads
+        env:
+        - name: PUID
+          value: '1001'
+        - name: PGID
+          value: '1001'
+        - name: TZ
+          value: 'America/Los_Angeles'
+        ports:
+        - name: radarr4k
+          containerPort: 7878
+        readinessProbe:
+          tcpSocket:
+            port: radarr4k
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: radarr4k
+          initialDelaySeconds: 15
+          periodSeconds: 20
