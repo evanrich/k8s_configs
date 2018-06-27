@@ -9,7 +9,12 @@ spec:
       labels:
         app: sonarr
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: mira-b
       volumes:
+      - name: sonarr
+        hostPath:
+          path: /dockerfs/sonarr
       - name: dockerdata
         persistentVolumeClaim:
           claimName: dockerdata-nas
@@ -20,8 +25,8 @@ spec:
       - name: sonarr
         image: linuxserver/sonarr:142
         volumeMounts:
-        - name: dockerdata
-          subPath: sonarr/config
+        - name: sonarr
+          subPath: config
           mountPath: /config
         - name: tv-nas
           mountPath: /tv
