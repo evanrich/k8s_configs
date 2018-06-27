@@ -1,0 +1,58 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sonarr4k
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sonarr4k
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: mira-b
+      volumes:
+      - name: sonarr4k
+        hostPath:
+          path: /dockerfs/sonarr4k
+      - name: dockerdata
+        persistentVolumeClaim:
+          claimName: dockerdata-nas
+      - name: tv4k-nas
+        persistentVolumeClaim:
+          claimName: tv4k-nas
+      containers:
+      - name: sonarr4k
+        image: linuxserver/sonarr:117
+        volumeMounts:
+        - name: sonarr4k
+          subPath: config
+          mountPath: /config
+        - name: tv4k-nas
+          mountPath: /4ktv
+        - name: dockerdata
+          subPath: deluge/downloads/completed
+          mountPath: /mnt/deluge/completed
+        - name: dockerdata
+          subPath: sabnzbdplus/downloads
+          mountPath: /sabdownloads
+        env:
+        - name: PUID
+          value: '1001'
+        - name: PGID
+          value: '1001'
+        - name: TZ
+          value: 'America/Los_Angeles'
+        ports:
+        - name: sonarr4k
+          containerPort: 8989
+        readinessProbe:
+          tcpSocket:
+            port: sonarr4k
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: sonarr4k
+          initialDelaySeconds: 15
+          periodSeconds: 20
